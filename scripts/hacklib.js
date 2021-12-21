@@ -201,6 +201,19 @@ export function findMostLucrativeServer(ns, startHost, maxDepth)
 
 
 /// <summary>
+/// Copies a script to a host and executes it with arguments using
+/// the maximum number of threads possible.
+/// </summary>
+export async function deployScriptOnServer(ns, host, script, ...args)
+{
+    await ns.scp(script, host);
+    ns.killall(host);
+    let threadCount = getMaxThreadsForScript(ns, script, host);
+    ns.exec(script, host, threadCount, ...args);
+}
+
+
+/// <summary>
 /// Returns the max number of threads that can be used to run
 /// a script on a given server.
 /// </summary>
