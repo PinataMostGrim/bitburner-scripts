@@ -41,3 +41,33 @@ export function getPortsOpenable(ns)
 
     return portCount;
 }
+
+
+/// <summary>
+/// Opens the number of ports required to gain root access on a target host.
+/// </summary>
+export function openPorts(ns, host)
+{
+    let requiredPorts = ns.getServerNumPortsRequired(host);
+    if (requiredPorts === 0)
+    {
+        ns.tprint('Opened 0 ports');
+        return true;
+    }
+
+    ns.brutessh(host);
+    if (requiredPorts === 1)
+    {
+        ns.tprint('Opened 1 ports');
+        return true;
+    }
+
+    ns.ftpcrack(host);
+    if (requiredPorts === 2)
+    {
+        ns.tprint('Opened 2 ports');
+        return true;
+    }
+
+    return false;
+}
