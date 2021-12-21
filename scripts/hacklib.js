@@ -198,3 +198,17 @@ export function findMostLucrativeServer(ns, startHost, maxDepth)
 
     return bestServer;
 }
+
+
+/// <summary>
+/// Returns the max number of threads that can be used to run
+/// a script on a given server.
+/// </summary>
+export function getMaxThreadsForScript(ns, script, host)
+{
+    let serverRam = ns.getServerMaxRam(host);
+    let serverRamUsed = ns.getServerUsedRam(host);
+    let scriptRam = ns.getScriptRam(script);
+
+    return Math.floor((serverRam - serverRamUsed) / scriptRam);
+}
