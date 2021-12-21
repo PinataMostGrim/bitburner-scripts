@@ -134,14 +134,18 @@ function recursiveScan(ns, parentHost, depth, maxDepth, servers)
 /// Returns an array of all servers that are currently hackable
 /// for a given max depth from a start host.
 /// </summary>
-export function findHackableServers(ns, startHost, maxDepth)
+export function findHackableServers(ns, startHost, maxDepth, filterOwned = false)
 {
     const hackableServers = [];
     let servers = findAllServers(ns, startHost, maxDepth);
     for (let server of servers)
     {
-        if (ns.hasRootAccess(server)
-            || !canGetRootAccess(ns, server))
+        if (filterOwned && ns.hasRootAccess(server))
+        {
+            continue;
+        }
+
+        if (!canGetRootAccess(ns, server))
         {
             continue;
         }
