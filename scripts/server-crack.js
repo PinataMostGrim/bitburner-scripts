@@ -1,4 +1,6 @@
 /** @param {NS} ns **/
+import {canGetRootAccess, getRootAccess} from "hacklib.js";
+
 export async function main(ns)
 {
     const args = ns.flags([["help", false]]);
@@ -19,32 +21,23 @@ export async function main(ns)
         return;
     }
 
-    var requiredHackLevel = ns.getServerRequiredHackingLevel(host);
-    var hackLevel = ns.getHackingLevel();
-    if (requiredHackLevel > hackLevel)
+    let canHack = canGetRootAccess(ns, host);
+    if (!canHack)
     {
-        ns.tprint(`Hack level too low ('${hackLevel}'); server '${host}' requires a hacking level of '${requiredHackLevel}'`)
+        ns.tprint(`Unable to compromise server '${host}'`);
         return;
     }
 
-    ns.tprint(`Cracking server '${host}'`)
+    ns.tprint(`Compromising server '${host}'`);
+    let success = getRootAccess(ns, host);
 
-    ns.tprint(`Brute forcing ssh`)
-    ns.brutessh(host);
-
-    ns.tprint(`Cracking ftp`)
-    ns.ftpcrack(host);
-
-    ns.tprint(`Nuking host`)
-    ns.nuke(host);
-
-    if (!ns.hasRootAccess(host))
+    if (success)
     {
-        ns.tprint(`Failed to gain root access on host '${host}'`)
+        ns.tprint(`Root access on host '${host}' gained`);
         return;
     }
 
-    ns.tprint(`Root access on host '${host}' gained`)
+    ns.tprint(`Failed to gain root access on host '${host}'`);
 }
 
 export function autocomplete(data, args)
