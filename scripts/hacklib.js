@@ -88,3 +88,43 @@ export function openPorts(ns, host)
 
     return false;
 }
+
+
+/// <summary>
+/// Returns an array of all servers reachable for a given
+/// max depth from a start host.
+/// </summary>
+export function findAllServers(ns, startHost, maxDepth)
+{
+    let depth = 0;
+    const servers = [];
+    recursiveScan(ns, startHost, depth, maxDepth, servers);
+
+    return servers;
+}
+
+
+function recursiveScan(ns, parentHost, depth, maxDepth, servers)
+{
+    if (!servers.includes(parentHost))
+    {
+        servers.push(parentHost);
+    }
+
+    depth++;
+    if (depth > maxDepth)
+    {
+        return;
+    }
+
+    const children = ns.scan(parentHost);
+    for (let child of children)
+    {
+        if (parent == child)
+        {
+            continue;
+        }
+
+        recursiveScan(ns, child, depth, maxDepth, servers);
+    }
+}
