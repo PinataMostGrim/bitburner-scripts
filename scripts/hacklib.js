@@ -9,6 +9,7 @@ export function canGetRootAccess(ns, host)
     let hackLevel = ns.getHackingLevel();
     if (requiredHackLevel > hackLevel)
     {
+        ns.tprint(`Hack level too low (${hackLevel}); server '${host}' requires a hacking level of '${requiredHackLevel}'`)
         return false;
     }
 
@@ -16,6 +17,7 @@ export function canGetRootAccess(ns, host)
     let portsOpenable = getPortsOpenable(ns);
     if (requiredPorts > portsOpenable)
     {
+        ns.tprint(`Unable to open the required number of ports (${requiredPorts}); can only open ${portsOpenable} ports`)
         return false;
     }
 
@@ -29,6 +31,8 @@ export function canGetRootAccess(ns, host)
 export function getRootAccess(ns, host)
 {
     openPorts(ns, host);
+
+    ns.tprint(`Nuking server '${host}'`);
     ns.nuke(host);
 
     return ns.hasRootAccess(host)
