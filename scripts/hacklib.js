@@ -151,3 +151,23 @@ export function findHackableServers(ns, startHost, maxDepth)
 
     return hackableServers;
 }
+
+
+/// <summary>
+/// Returns an array of all servers that are currently hacked
+/// for a given max depth from a start host.
+/// </summary>
+export function findHackedServers(ns, startHost, maxDepth)
+{
+    const hackedServers = [];
+    let servers = findAllServers(ns, startHost, maxDepth);
+    for (let server of servers)
+    {
+        if (ns.hasRootAccess(server))
+        {
+            hackedServers.push(server);
+        }
+    }
+
+    return hackedServers;
+}
