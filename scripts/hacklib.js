@@ -28,7 +28,7 @@ export function canGetRootAccess(ns, server)
 /// <summary>
 /// Attempts to gain root access on the target server.
 /// </summary>
-export function getRootAccess(ns, server)
+export function openRootAccess(ns, server)
 {
     openPorts(ns, server);
 

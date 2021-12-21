@@ -1,5 +1,5 @@
 /** @param {NS} ns **/
-import {canGetRootAccess, getRootAccess} from "hacklib.js";
+import {canGetRootAccess, openRootAccess} from "hacklib.js";
 
 export async function main(ns)
 {
@@ -29,7 +29,7 @@ export async function main(ns)
     }
 
     ns.tprint(`Compromising server '${server}'`);
-    let success = getRootAccess(ns, server);
+    let success = openRootAccess(ns, server);
 
     if (success)
     {
