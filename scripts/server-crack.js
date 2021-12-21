@@ -46,3 +46,8 @@ export async function main(ns)
 
     ns.tprint(`Root access on host '${host}' gained`)
 }
+
+export function autocomplete(data, args)
+{
+    return data.servers;
+}
