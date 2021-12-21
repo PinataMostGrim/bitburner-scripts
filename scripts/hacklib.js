@@ -175,3 +175,26 @@ export function findHackedServers(ns, startHost, maxDepth)
 
     return hackedServers;
 }
+
+
+/// <summary>
+/// Finds the most lucrative server that is currently hackable.
+/// </summary>
+export function findMostLucrativeServer(ns, startHost, maxDepth)
+{
+    let bestServer = "";
+    let maxMoney = 0;
+
+    let servers = findHackableServers(ns, startHost, maxDepth);
+    for (let server of servers)
+    {
+        let money = ns.getServerMaxMoney(server);
+        if (money > maxMoney)
+        {
+            bestServer = server;
+            maxMoney = money;
+        }
+    }
+
+    return bestServer;
+}
