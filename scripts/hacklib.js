@@ -22,6 +22,19 @@ export function canGetRootAccess(ns, host)
     return true;
 }
 
+
+/// <summary>
+/// Attempts to gain root access on the target host.
+/// </summary>
+export function getRootAccess(ns, host)
+{
+    openPorts(ns, host);
+    ns.nuke(host);
+
+    return ns.hasRootAccess(host)
+}
+
+
 /// <summary>
 /// Returns the maximum number of ports that can currently be opened.
 /// </summary>
