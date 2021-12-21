@@ -1,19 +1,19 @@
 /** @param {NS} ns **/
 
 /// <summary>
-/// Returns whether or not root access can be gained on the target host.
+/// Returns whether or not root access can be gained on a server.
 /// </summary>
-export function canGetRootAccess(ns, host)
+export function canGetRootAccess(ns, server)
 {
-    let requiredHackLevel = ns.getServerRequiredHackingLevel(host);
+    let requiredHackLevel = ns.getServerRequiredHackingLevel(server);
     let hackLevel = ns.getHackingLevel();
     if (requiredHackLevel > hackLevel)
     {
-        ns.tprint(`[hacklib] Hack level too low (${hackLevel}); server '${host}' requires a hacking level of '${requiredHackLevel}'`)
+        ns.tprint(`[hacklib] Hack level too low (${hackLevel}); server '${server}' requires a hacking level of '${requiredHackLevel}'`)
         return false;
     }
 
-    let requiredPorts = ns.getServerNumPortsRequired(host);
+    let requiredPorts = ns.getServerNumPortsRequired(server);
     let portsOpenable = getPortsOpenable(ns);
     if (requiredPorts > portsOpenable)
     {
@@ -26,16 +26,16 @@ export function canGetRootAccess(ns, host)
 
 
 /// <summary>
-/// Attempts to gain root access on the target host.
+/// Attempts to gain root access on the target server.
 /// </summary>
-export function getRootAccess(ns, host)
+export function getRootAccess(ns, server)
 {
-    openPorts(ns, host);
+    openPorts(ns, server);
 
-    ns.tprint(`[hacklib] Nuking server '${host}'`);
-    ns.nuke(host);
+    ns.tprint(`[hacklib] Nuking server '${server}'`);
+    ns.nuke(server);
 
-    return ns.hasRootAccess(host)
+    return ns.hasRootAccess(server)
 }
 
 
@@ -61,25 +61,25 @@ export function getPortsOpenable(ns)
 
 
 /// <summary>
-/// Opens the number of ports required to gain root access on a target host.
+/// Opens the number of ports required to gain root access on a target server.
 /// </summary>
-export function openPorts(ns, host)
+export function openPorts(ns, server)
 {
-    let requiredPorts = ns.getServerNumPortsRequired(host);
+    let requiredPorts = ns.getServerNumPortsRequired(server);
     if (requiredPorts === 0)
     {
         ns.tprint('[hacklib] Opened 0 ports');
         return true;
     }
 
-    ns.brutessh(host);
+    ns.brutessh(server);
     if (requiredPorts === 1)
     {
         ns.tprint('[hacklib] Opened 1 ports');
         return true;
     }
 
-    ns.ftpcrack(host);
+    ns.ftpcrack(server);
     if (requiredPorts === 2)
     {
         ns.tprint('[hacklib] Opened 2 ports');
@@ -92,23 +92,23 @@ export function openPorts(ns, host)
 
 /// <summary>
 /// Returns an array of all servers reachable for a given
-/// max depth from a start host.
+/// max depth from a starting server.
 /// </summary>
-export function findAllServers(ns, startHost, maxDepth)
+export function findAllServers(ns, startServer, maxDepth)
 {
     let depth = 0;
     const servers = [];
-    recursiveScan(ns, startHost, depth, maxDepth, servers);
+    recursiveScan(ns, startServer, depth, maxDepth, servers);
 
     return servers;
 }
 
 
-function recursiveScan(ns, parentHost, depth, maxDepth, servers)
+function recursiveScan(ns, parentServer, depth, maxDepth, servers)
 {
-    if (!servers.includes(parentHost))
+    if (!servers.includes(parentServer))
     {
-        servers.push(parentHost);
+        servers.push(parentServer);
     }
 
     depth++;
@@ -117,7 +117,7 @@ function recursiveScan(ns, parentHost, depth, maxDepth, servers)
         return;
     }
 
-    const children = ns.scan(parentHost);
+    const children = ns.scan(parentServer);
     for (let child of children)
     {
         if (parent == child)
@@ -132,12 +132,12 @@ function recursiveScan(ns, parentHost, depth, maxDepth, servers)
 
 /// <summary>
 /// Returns an array of all servers that are currently hackable
-/// for a given max depth from a start host.
+/// for a given max depth from a starting server.
 /// </summary>
-export function findHackableServers(ns, startHost, maxDepth, filterOwned = false)
+export function findHackableServers(ns, startServer, maxDepth, filterOwned = false)
 {
     const hackableServers = [];
-    let servers = findAllServers(ns, startHost, maxDepth);
+    let servers = findAllServers(ns, startServer, maxDepth);
     for (let server of servers)
     {
         if (filterOwned && ns.hasRootAccess(server))
@@ -159,12 +159,12 @@ export function findHackableServers(ns, startHost, maxDepth, filterOwned = false
 
 /// <summary>
 /// Returns an array of all servers that are currently hacked
-/// for a given max depth from a start host.
+/// for a given max depth from a starting server.
 /// </summary>
-export function findHackedServers(ns, startHost, maxDepth)
+export function findHackedServers(ns, startingServer, maxDepth)
 {
     const hackedServers = [];
-    let servers = findAllServers(ns, startHost, maxDepth);
+    let servers = findAllServers(ns, startingServer, maxDepth);
     for (let server of servers)
     {
         if (ns.hasRootAccess(server))
@@ -180,12 +180,12 @@ export function findHackedServers(ns, startHost, maxDepth)
 /// <summary>
 /// Finds the most lucrative server that is currently hackable.
 /// </summary>
-export function findMostLucrativeServer(ns, startHost, maxDepth)
+export function findMostLucrativeServer(ns, startingServer, maxDepth)
 {
     let bestServer = "";
     let maxMoney = 0;
 
-    let servers = findHackableServers(ns, startHost, maxDepth);
+    let servers = findHackableServers(ns, startingServer, maxDepth);
     for (let server of servers)
     {
         let money = ns.getServerMaxMoney(server);
@@ -201,15 +201,15 @@ export function findMostLucrativeServer(ns, startHost, maxDepth)
 
 
 /// <summary>
-/// Copies a script to a host and executes it with arguments using
+/// Copies a script to a server and executes it with arguments using
 /// the maximum number of threads possible.
 /// </summary>
-export async function deployScriptOnServer(ns, host, script, ...args)
+export async function deployScriptOnServer(ns, server, script, ...args)
 {
-    await ns.scp(script, host);
-    ns.killall(host);
-    let threadCount = getMaxThreadsForScript(ns, script, host);
-    ns.exec(script, host, threadCount, ...args);
+    await ns.scp(script, server);
+    ns.killall(server);
+    let threadCount = getMaxThreadsForScript(ns, script, server);
+    ns.exec(script, server, threadCount, ...args);
 }
 
 
@@ -217,10 +217,10 @@ export async function deployScriptOnServer(ns, host, script, ...args)
 /// Returns the max number of threads that can be used to run
 /// a script on a given server.
 /// </summary>
-export function getMaxThreadsForScript(ns, script, host)
+export function getMaxThreadsForScript(ns, script, server)
 {
-    let serverRam = ns.getServerMaxRam(host);
-    let serverRamUsed = ns.getServerUsedRam(host);
+    let serverRam = ns.getServerMaxRam(server);
+    let serverRamUsed = ns.getServerUsedRam(server);
     let scriptRam = ns.getScriptRam(script);
 
     return Math.floor((serverRam - serverRamUsed) / scriptRam);
