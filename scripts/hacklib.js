@@ -206,6 +206,11 @@ export function findMostLucrativeServer(ns, startingServer, maxDepth)
 /// </summary>
 export async function deployScriptOnServer(ns, server, script, ...args)
 {
+    if (server == "home")
+    {
+        return;
+    }
+
     await ns.scp(script, server);
     ns.killall(server);
     let threadCount = getMaxThreadsForScript(ns, script, server);
