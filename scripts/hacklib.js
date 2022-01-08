@@ -9,7 +9,7 @@ export function canGetRootAccess(ns, server)
     let hackLevel = ns.getHackingLevel();
     if (requiredHackLevel > hackLevel)
     {
-        ns.tprint(`[hacklib] Hack level too low (${hackLevel}); server '${server}' requires a hacking level of '${requiredHackLevel}'`)
+        // ns.tprint(`[hacklib] Hack level too low (${hackLevel}); server '${server}' requires a hacking level of '${requiredHackLevel}'`)
         return false;
     }
 
@@ -17,7 +17,7 @@ export function canGetRootAccess(ns, server)
     let portsOpenable = getPortsOpenable(ns);
     if (requiredPorts > portsOpenable)
     {
-        ns.tprint(`[hacklib] Unable to open the required number of ports (${requiredPorts}); can only open ${portsOpenable} ports`)
+        // ns.tprint(`[hacklib] Unable to open the required number of ports (${requiredPorts}); can only open ${portsOpenable} ports`)
         return false;
     }
 
@@ -68,21 +68,21 @@ export function openPorts(ns, server)
     let requiredPorts = ns.getServerNumPortsRequired(server);
     if (requiredPorts === 0)
     {
-        ns.tprint('[hacklib] Opened 0 ports');
+        // ns.tprint('[hacklib] Opened 0 ports');
         return true;
     }
 
     ns.brutessh(server);
     if (requiredPorts === 1)
     {
-        ns.tprint('[hacklib] Opened 1 ports');
+        // ns.tprint('[hacklib] Opened 1 ports');
         return true;
     }
 
     ns.ftpcrack(server);
     if (requiredPorts === 2)
     {
-        ns.tprint('[hacklib] Opened 2 ports');
+        // ns.tprint('[hacklib] Opened 2 ports');
         return true;
     }
 
