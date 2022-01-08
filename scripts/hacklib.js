@@ -1,8 +1,7 @@
-/** @param {NS} ns **/
-
 /// <summary>
 /// Returns whether or not root access can be gained on a server.
 /// </summary>
+/** @param {NS} ns **/
 export function canGetRootAccess(ns, server)
 {
     let requiredHackLevel = ns.getServerRequiredHackingLevel(server);
@@ -28,6 +27,7 @@ export function canGetRootAccess(ns, server)
 /// <summary>
 /// Attempts to gain root access on the target server.
 /// </summary>
+/** @param {NS} ns **/
 export function openRootAccess(ns, server)
 {
     openPorts(ns, server);
@@ -42,6 +42,7 @@ export function openRootAccess(ns, server)
 /// <summary>
 /// Returns the maximum number of ports that can currently be opened.
 /// </summary>
+/** @param {NS} ns **/
 export function getPortsOpenable(ns)
 {
     let portCount = 0;
@@ -63,6 +64,7 @@ export function getPortsOpenable(ns)
 /// <summary>
 /// Opens the number of ports required to gain root access on a target server.
 /// </summary>
+/** @param {NS} ns **/
 export function openPorts(ns, server)
 {
     let requiredPorts = ns.getServerNumPortsRequired(server);
@@ -94,6 +96,7 @@ export function openPorts(ns, server)
 /// Returns an array of all servers reachable for a given
 /// max depth from a starting server.
 /// </summary>
+/** @param {NS} ns **/
 export function findAllServers(ns, startServer = "home", maxDepth = -1)
 {
     let depth = 0;
@@ -104,6 +107,7 @@ export function findAllServers(ns, startServer = "home", maxDepth = -1)
 }
 
 
+/** @param {NS} ns **/
 function recursiveScan(ns, parentServer, depth, maxDepth, servers)
 {
     if (servers.includes(parentServer))
@@ -137,6 +141,7 @@ function recursiveScan(ns, parentServer, depth, maxDepth, servers)
 /// Returns an array of all servers that are currently hackable
 /// for a given max depth from a starting server.
 /// </summary>
+/** @param {NS} ns **/
 export function findHackableServers(ns, startServer = "home", maxDepth = -1, filterOwned = false)
 {
     const hackableServers = [];
@@ -164,6 +169,7 @@ export function findHackableServers(ns, startServer = "home", maxDepth = -1, fil
 /// Returns an array of all servers that are currently hacked
 /// for a given max depth from a starting server.
 /// </summary>
+/** @param {NS} ns **/
 export function findHackedServers(ns, startingServer = "home", maxDepth = -1)
 {
     const hackedServers = [];
@@ -183,6 +189,7 @@ export function findHackedServers(ns, startingServer = "home", maxDepth = -1)
 /// <summary>
 /// Finds the most lucrative server that is currently hackable.
 /// </summary>
+/** @param {NS} ns **/
 export function findMostLucrativeServer(ns, startingServer = "home", maxDepth = -1)
 {
     let bestServer = "";
@@ -207,6 +214,7 @@ export function findMostLucrativeServer(ns, startingServer = "home", maxDepth = 
 /// Copies a script to a server and executes it with arguments using
 /// the maximum number of threads possible.
 /// </summary>
+/** @param {NS} ns **/
 export async function deployScriptOnServer(ns, server, script, ...args)
 {
     if (server == "home")
@@ -225,6 +233,7 @@ export async function deployScriptOnServer(ns, server, script, ...args)
 /// Returns the max number of threads that can be used to run
 /// a script on a given server.
 /// </summary>
+/** @param {NS} ns **/
 export function getMaxThreadsForScript(ns, script, server)
 {
     let serverRam = ns.getServerMaxRam(server);

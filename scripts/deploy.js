@@ -1,6 +1,6 @@
-/** @param {NS} ns **/
 import {deployScriptOnServer} from "hacklib.js";
 
+/** @param {NS} ns **/
 export async function main(ns)
 {
     const args = ns.flags([["help", false]]);

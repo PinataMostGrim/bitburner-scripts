@@ -1,3 +1,4 @@
+/** @param {NS} ns **/
 export async function main(ns)
 {
     const args = ns.flags([["help", false]]);
@@ -21,6 +22,7 @@ export async function main(ns)
     }
 }
 
+/** @param {NS} ns **/
 function recursiveScan(ns, parent, server, target, route)
 {
     const children = ns.scan(server);
