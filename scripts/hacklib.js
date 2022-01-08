@@ -106,10 +106,13 @@ export function findAllServers(ns, startServer, maxDepth)
 
 function recursiveScan(ns, parentServer, depth, maxDepth, servers)
 {
-    if (!servers.includes(parentServer))
+    if (servers.includes(parentServer))
     {
-        servers.push(parentServer);
+        // We have already visited this server.
+        return;
     }
+
+    servers.push(parentServer);
 
     depth++;
     if (depth > maxDepth)
