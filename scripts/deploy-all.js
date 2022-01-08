@@ -1,4 +1,4 @@
-import {openRootAccess, findHackableServers, findHackedServers, deployScriptOnServer} from "hacklib.js";
+import {openRootAccess, findHackableServers, findHackedServers, deployScriptOnServer} from "/scripts/hacklib.js";
 
 /** @param {NS} ns **/
 export async function main(ns)

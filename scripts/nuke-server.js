@@ -1,5 +1,5 @@
 /** @param {NS} ns **/
-import {canGetRootAccess, openRootAccess} from "hacklib.js";
+import {canGetRootAccess, openRootAccess} from "/scripts/hacklib.js";
 
 export async function main(ns)
 {

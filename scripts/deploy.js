@@ -1,4 +1,4 @@
-import {deployScriptOnServer} from "hacklib.js";
+import {deployScriptOnServer} from "/scripts/hacklib.js";
 
 /** @param {NS} ns **/
 export async function main(ns)
