@@ -94,7 +94,7 @@ export function openPorts(ns, server)
 /// Returns an array of all servers reachable for a given
 /// max depth from a starting server.
 /// </summary>
-export function findAllServers(ns, startServer, maxDepth)
+export function findAllServers(ns, startServer = "home", maxDepth = -1)
 {
     let depth = 0;
     const servers = [];
@@ -115,7 +115,7 @@ function recursiveScan(ns, parentServer, depth, maxDepth, servers)
     servers.push(parentServer);
 
     depth++;
-    if (depth > maxDepth)
+    if (maxDepth != -1 && depth > maxDepth)
     {
         return;
     }
@@ -137,7 +137,7 @@ function recursiveScan(ns, parentServer, depth, maxDepth, servers)
 /// Returns an array of all servers that are currently hackable
 /// for a given max depth from a starting server.
 /// </summary>
-export function findHackableServers(ns, startServer, maxDepth, filterOwned = false)
+export function findHackableServers(ns, startServer = "home", maxDepth = -1, filterOwned = false)
 {
     const hackableServers = [];
     let servers = findAllServers(ns, startServer, maxDepth);
@@ -164,7 +164,7 @@ export function findHackableServers(ns, startServer, maxDepth, filterOwned = fal
 /// Returns an array of all servers that are currently hacked
 /// for a given max depth from a starting server.
 /// </summary>
-export function findHackedServers(ns, startingServer, maxDepth)
+export function findHackedServers(ns, startingServer = "home", maxDepth = -1)
 {
     const hackedServers = [];
     let servers = findAllServers(ns, startingServer, maxDepth);
@@ -183,7 +183,7 @@ export function findHackedServers(ns, startingServer, maxDepth)
 /// <summary>
 /// Finds the most lucrative server that is currently hackable.
 /// </summary>
-export function findMostLucrativeServer(ns, startingServer, maxDepth)
+export function findMostLucrativeServer(ns, startingServer = "home", maxDepth = -1)
 {
     let bestServer = "";
     let maxMoney = 0;
