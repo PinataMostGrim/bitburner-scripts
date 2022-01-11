@@ -11,6 +11,6 @@ export async function main(ns)
         return;
     }
 
-    await updateBotIndex(ns);
-    ns.tprint("Botnet index updated");
+    let botCount = await updateBotIndex(ns);
+    ns.tprint(`Botnet index updated with ${botCount} entries`);
 }

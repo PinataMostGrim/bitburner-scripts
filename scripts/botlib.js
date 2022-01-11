@@ -4,6 +4,7 @@ const BotIndexPath = "/scripts/bot-index.txt";
 
 /// <summary>
 /// Writes a list of all hackable servers to an index file.
+/// Returns the number of servers included in the bot-index.
 /// </summary>
 /** @param {NS} ns **/
 export async function updateBotIndex(ns)
@@ -12,6 +13,8 @@ export async function updateBotIndex(ns)
     let jsonStr = JSON.stringify(servers);
 
     await ns.write(BotIndexPath, jsonStr, 'w');
+
+    return servers.length;
 }
 
 
