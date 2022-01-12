@@ -57,6 +57,21 @@ export function getPortsOpenable(ns)
         portCount++;
     }
 
+    if (ns.fileExists("relaySMTP.exe"))
+    {
+        portCount++;
+    }
+
+    if (ns.fileExists("HTTPWorm.exe"))
+    {
+        portCount++;
+    }
+
+    if (ns.fileExists("SQLInject.exe"))
+    {
+        portCount++;
+    }
+
     return portCount;
 }
 
@@ -85,6 +100,27 @@ export function openPorts(ns, server)
     if (requiredPorts === 2)
     {
         // ns.tprint('[hacklib] Opened 2 ports');
+        return true;
+    }
+
+    ns.relaysmtp(server);
+    if (requiredPorts === 3)
+    {
+        // ns.tprint('[hacklib] Opened 3 ports');
+        return true;
+    }
+
+    ns.httpworm(server);
+    if (requiredPorts === 4)
+    {
+        // ns.tprint('[hacklib] Opened 4 ports');
+        return true;
+    }
+
+    ns.sqlinject(server);
+    if (requiredPorts === 5)
+    {
+        // ns.tprint('[hacklib] Opened 5 ports');
         return true;
     }
 
