@@ -260,8 +260,19 @@ export async function deployScriptOnServer(ns, server, script, ...args)
 
     await ns.scp(script, server);
     ns.killall(server);
+    execMaxThreads(ns, server, script, ...args);
+}
+
+
+/// <summary>
+/// Executes a script on a server using the maximum number of threads possible.
+/// </summary>
+/** @param {NS} ns **/
+export async function execMaxThreads(ns, server, script, ...args)
+{
     let threadCount = getMaxThreadsForScript(ns, script, server);
     ns.exec(script, server, threadCount, ...args);
+    return threadCount;
 }
 
 
