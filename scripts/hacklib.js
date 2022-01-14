@@ -253,7 +253,7 @@ export function findMostLucrativeServer(ns, startingServer = "home", maxDepth = 
 /** @param {NS} ns **/
 export async function deployScriptOnServer(ns, server, script, ...args)
 {
-    if (server == "home")
+    if (server === "home" || server === "darkweb")
     {
         return;
     }
@@ -271,6 +271,11 @@ export async function deployScriptOnServer(ns, server, script, ...args)
 export async function execMaxThreads(ns, server, script, ...args)
 {
     let threadCount = getMaxThreadsForScript(ns, script, server);
+    if (threadCount === 0)
+    {
+        return 0;
+    }
+
     ns.exec(script, server, threadCount, ...args);
     return threadCount;
 }
