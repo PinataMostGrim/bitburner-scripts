@@ -7,14 +7,18 @@ import {
 export async function main(ns)
 {
     const args = ns.flags([["help", false]]);
-    if (args.help || args._.length < 1)
+    if (args.help || args._.length > 1)
     {
-        ns.tprint("Prints the currently most profitable servers to hack.");
+        ns.tprint("Prints the currently most profitable servers to hack. Prints 10 servers by default.");
         ns.tprint(`Usage: run ${ns.getScriptName()} <SERVER COUNT>`);
         return;
     }
 
-    const serverCount = args._[0];
+    let serverCount = 10;
+    if (args._.length > 0)
+    {
+        serverCount = args._[0];
+    }
 
     // Print max money for hackable servers
     let results = [];
