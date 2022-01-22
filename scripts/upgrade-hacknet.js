@@ -23,6 +23,11 @@ export async function main(ns)
 /** @param {NS} ns **/
 async function purchaseNodes(ns)
 {
+	let formatter = new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD'
+	});
+
 	while(ns.hacknet.numNodes() < MAX_NODE_COUNT)
 	{
 		let cost = ns.hacknet.getPurchaseNodeCost()
