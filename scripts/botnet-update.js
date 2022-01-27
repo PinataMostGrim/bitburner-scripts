@@ -1,4 +1,4 @@
-import {updateBotIndex} from "/scripts/botlib.js";
+import {getBotIndexCount, updateBotIndex} from "/scripts/botlib.js";
 
 /** @param {NS} ns **/
 export async function main(ns)
@@ -11,6 +11,9 @@ export async function main(ns)
         return;
     }
 
+    let previousBotCount = await getBotIndexCount(ns);
     let botCount = await updateBotIndex(ns);
-    ns.tprint(`Botnet index updated with ${botCount} entries`);
+    let addedBots = botCount - previousBotCount;
+
+    ns.tprint(`Botnet index updated with ${botCount} entries (${addedBots} added)`);
 }

@@ -27,3 +27,15 @@ export async function retrieveBotIndex(ns)
     let jsonResult = await ns.read(BotIndexPath);
     return JSON.parse(jsonResult);
 }
+
+
+/// <summary>
+/// Returns the number of servers currently stored in the
+/// bot index.
+/// </summary>
+/** @param {NS} ns **/
+export async function getBotIndexCount(ns)
+{
+    let servers = await retrieveBotIndex(ns);
+    return servers.length;
+}
